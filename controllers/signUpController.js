@@ -91,7 +91,7 @@ function addressCheck(address) {
 function retweetCheck(twitterUserName) {
   return new Promise((resolve, reject) => {
     var verifiedRetweetUser = false;
-    twitter_client.get(`https://api.nakedheadz.com/2/tweets/${process.env.TWEETID}/retweeted_by`, function (error, tweets, response) {
+    twitter_client.get(`https://api.twitter.com/2/tweets/${process.env.TWEETID}/retweeted_by`, function (error, tweets, response) {
     if (error) throw error;
     Object.keys(tweets.data).map(function (key, index) {
       if (tweets.data[index].username == twitterUserName) {
