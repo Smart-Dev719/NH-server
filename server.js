@@ -19,6 +19,12 @@ app.use(routes);
 // Handling Errors
 app.use((err, req, res, next) => {
     // console.log(err);
+
+    res.setHeader('Acces-Control-Allow-Origin','*');
+    res.setHeader('Acces-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+    res.setHeader('Acces-Contorl-Allow-Methods','Content-Type','Authorization');
+    next(); 
+
     err.statusCode = err.statusCode || 500;
     err.message = err.message || "Internal Server Error";
     res.status(err.statusCode).json({
