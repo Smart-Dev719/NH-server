@@ -1,6 +1,6 @@
 const db = require("../models");
 const User = db.users;
-const Op = sequelize.Op;
+const Op = db.sequelize.Op;
 const dotenv = require('dotenv');
 dotenv.config();
 const {
@@ -31,6 +31,7 @@ function discordReady(client) {
 }
 
 exports.discordVerify = async (req, res, next) => {
+  console.log("discordVerify")
   if (!req.body.discordUserName) {
     res.status(400).send({
       message: "Discord Username can not be empty!",
