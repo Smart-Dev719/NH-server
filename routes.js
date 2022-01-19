@@ -29,6 +29,9 @@ router.post('/signup', [body('address', 'twitterUserName', 'discordUserName')], 
 router.get('/test', function (request, response) {
     response.send('Server is running');
 });
+router.get('/asdf',function (request, response) {
+    response.send('Server is asdfasdf');
+});
 
 
 
