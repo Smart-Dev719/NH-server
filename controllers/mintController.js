@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.waitlist;
+const User = db.users;
 // const MintHistory = db.minthistory;
 const dotenv = require('dotenv');
 dotenv.config();
