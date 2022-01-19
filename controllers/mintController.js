@@ -1,6 +1,6 @@
 const db = require("../models");
-const User = db.users;
-const MintHistory = db.minthistory;
+const User = db.waitlist;
+// const MintHistory = db.minthistory;
 const dotenv = require('dotenv');
 dotenv.config();
 var Web3 = require("web3");
@@ -11,7 +11,6 @@ const sequelize = require('sequelize');
 const Op = sequelize.Op;
 const Account = require('eth-lib/lib/account');
 const ethereumjsUtil = require('ethereumjs-util');
-
 exports.checkMintable = async (req, res, next) => {
     if (!req.body.address) {
         res.status(400).send({
@@ -21,7 +20,7 @@ exports.checkMintable = async (req, res, next) => {
         return;
     }
 
-    const totalToken = await contract.methods.totalToken().call();
+    const totalToken = await contract.methods.totalMint().call();
     if(totalToken < parseInt(process.env.TOKEN_ID_END)){
         if(process.env.PRESALE == "true"){
             const user = await User.findOne({ where: { address: req.body.address } });
@@ -29,12 +28,13 @@ exports.checkMintable = async (req, res, next) => {
                 try{
                     const tokens = await contract.methods.walletOfOwner(req.body.address).call();
                     const curColTokens = tokens.filter(token => parseInt(token) >= parseInt(process.env.TOKEN_ID_START) && parseInt(token) <= parseInt(process.env.TOKEN_ID_END));
-                    if(curColTokens.length < user.max_mint){
+                    if(curColTokens.length < parseInt(process.env.PRESALE_MAX_MINT)){
                         res.json({
                             success: true,
-                            count: parseInt(user.max_mint) - curColTokens.length
+                            count: parseInt(process.env.PRESALE_MAX_MINT) - curColTokens.length
                         })
                     } else {
+                        // console.log(curColTokens.length);
                         res.json({
                             success: false,
                             minted: true,
@@ -104,7 +104,7 @@ exports.getMintData = async (req, res, next) => {
     //     });
     // } else 
     {
-        const totalToken = await contract.methods.totalToken().call();
+        const totalToken = await contract.methods.totalMint().call();
         if(totalToken < parseInt(process.env.TOKEN_ID_END)){
             if(process.env.PRESALE == "true"){
                 const user = await User.findOne({ where: { address: req.body.address } });
@@ -112,10 +112,10 @@ exports.getMintData = async (req, res, next) => {
                     try{
                         const tokens = await contract.methods.walletOfOwner(req.body.address).call();
                         const curColTokens = tokens.filter(token => parseInt(token) >= parseInt(process.env.TOKEN_ID_START) && parseInt(token) <= parseInt(process.env.TOKEN_ID_END));
-                        if(curColTokens.length + parseInt(req.body.count) > user.max_mint) {
+                        if(curColTokens.length + parseInt(req.body.count) > process.env.PRESALE_MAX_MINT) {
                             res.json({
                                 success: false,
-                                message: "Sorry, your request is out of range!"
+                                message: `Sorry, your request is out of range! You can only mint ${process.env.PRESALE_MAX_MINT- curColTokens.length}!`,
                             });
                             return;
                         }
@@ -140,7 +140,8 @@ exports.getMintData = async (req, res, next) => {
                     if(curColTokens.length + parseInt(req.body.count) > parseInt(process.env.PUBLICSALE_MAX_MINT)){
                         res.json({
                             success: false,
-                            message: "Sorry, your request is out of range!"
+                            message: "Sorry, your request is out of range!",
+                            
                         });
                         return;
                     }
@@ -175,7 +176,7 @@ exports.getMintData = async (req, res, next) => {
         // const messageBytes = web3.utils.hexToBytes(messageHex);
         // const messageBuffer = Buffer.from(messageBytes);
         // const hash = ethereumjsUtil.bufferToHex(ethereumjsUtil.keccak256(messageBuffer));
-        // const signature = Account.sign(hash, process.env.PRIVATE_KEY);
+        // // const signature = Account.sign(hash, process.env.PRIVATE_KEY);
         res.json({
             success: true,
             tokenAmount: parseInt(req.body.count),

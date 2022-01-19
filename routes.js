@@ -4,7 +4,10 @@ const {
 } = require('express-validator');
 const {
     checkBalance
-} = require('./controllers/checkBalanceController');
+} = require('./controllers/checkBalanceController'); 
+const {
+    checkMintable
+} = require('./controllers/mintController');
 const {
     twitterVerify,
     retweetVerify
@@ -12,10 +15,12 @@ const {
 const {
     discordVerify
 } = require('./controllers/discordVerifyController');
-const {signUp} = require('./controllers/signUpController');
-const {checkUser} = require('./controllers/checkUserController');
+const { signUp } = require('./controllers/signUpController');
+const { checkUser } = require('./controllers/checkUserController');
 
 router.post('/checkUser', [body('address')], checkUser);
+router.post('/checkMintable', [body('address')], checkMintable);
+router.post('/getMintData', [body('address', 'count')], getMintData);
 router.post('/checkBalance', [body('address')], checkBalance);
 router.post('/twitterVerify', [body('twitterUserName')], twitterVerify);
 router.post('/retweetVerify', [body('twitterUserName')], retweetVerify);
