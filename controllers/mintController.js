@@ -105,7 +105,7 @@ exports.getMintData = async (req, res, next) => {
     //     });
     // } else 
     {
-        const totalToken = await contract.methods.totalMint().call();
+        const totalToken = await contract.methods.totalToken().call();
         if(totalToken < parseInt(process.env.TOKEN_ID_END)){
             if(process.env.PRESALE == "true"){
                 const user = await User.findOne({ where: { address: req.body.address } });
