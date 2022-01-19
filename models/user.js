@@ -19,11 +19,8 @@ module.exports = (sequelize, Sequelize) => {
       },
       email: {
         type: Sequelize.STRING,
-      },
-      max_mint: {
-        type: Sequelize.INTEGER,
-        defaultValue: 4
       }
+
     });
   
     return Users;

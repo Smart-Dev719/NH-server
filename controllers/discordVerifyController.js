@@ -1,6 +1,6 @@
 const db = require("../models");
 const User = db.users;
-const Op = db.Sequelize.Op;
+const Op = sequelize.Op;
 const dotenv = require('dotenv');
 dotenv.config();
 const {
