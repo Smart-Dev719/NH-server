@@ -12,6 +12,7 @@ const Op = sequelize.Op;
 const Account = require('eth-lib/lib/account');
 const ethereumjsUtil = require('ethereumjs-util');
 exports.checkMintable = async (req, res, next) => {
+    console.log("checkMintable:=>",req.body);
     if (!req.body.address) {
         res.status(400).send({
             success: false,
@@ -20,7 +21,7 @@ exports.checkMintable = async (req, res, next) => {
         return;
     }
 
-    const totalToken = await contract.methods.totalMint().call();
+    const totalToken = await contract.methods.totalToken().call();
     if(totalToken < parseInt(process.env.TOKEN_ID_END)){
         if(process.env.PRESALE == "true"){
             const user = await User.findOne({ where: { address: req.body.address } });
