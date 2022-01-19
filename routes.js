@@ -6,7 +6,7 @@ const {
     checkBalance
 } = require('./controllers/checkBalanceController'); 
 const {
-    checkMintable
+    checkMintable, getMintData
 } = require('./controllers/mintController');
 const {
     twitterVerify,
