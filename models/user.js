@@ -8,19 +8,7 @@ module.exports = (sequelize, Sequelize) => {
       address: {
         type: Sequelize.STRING,
         unique: true,
-      },
-      twitter_name: {
-        type: Sequelize.STRING,
-        unique: true,
-      },
-      discord_name: {
-        type: Sequelize.STRING,
-        unique: true,
-      },
-      email: {
-        type: Sequelize.STRING,
       }
-
     });
   
     return Users;

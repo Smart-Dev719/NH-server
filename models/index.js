@@ -20,7 +20,5 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./user.js")(sequelize, Sequelize);
-db.waitlist = require("./waitlist.js")(sequelize, Sequelize);
-db.minthistory = require("./minthistory.js")(sequelize, Sequelize);
 
 module.exports = db;
